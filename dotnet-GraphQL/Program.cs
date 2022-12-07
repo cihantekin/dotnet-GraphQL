@@ -10,7 +10,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(opts => opts.UseInMemoryDatabase("BlogsManagement"));
+builder.Services.AddDbContextFactory<AppDbContext>(opts => opts.UseInMemoryDatabase("BlogsManagement"));
+
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 
 var app = builder.Build();
 
