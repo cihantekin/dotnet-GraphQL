@@ -2,6 +2,7 @@
 
 namespace dotnet_GraphQL.GraphQL
 {
+    //GraphQL is not depend on any language so we need to define that types which we would like to expose.
     public class BlogPostType : ObjectType<BlogPost>
     {
         protected override void Configure(IObjectTypeDescriptor<BlogPost> descriptor)
