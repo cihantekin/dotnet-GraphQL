@@ -16,7 +16,7 @@ namespace dotnet_GraphQL.GraphQL
 
         public Author GetAuthor(BlogPost blog, IResolverContext resolverContext)
         {
-            return _authorRepository.GetList().Where(s => s.Id == blog.AuthorId).FirstOrDefault();
+            return _authorRepository.GetList().Where(s => s.Id == blog.AuthorId)?.FirstOrDefault();
         }
     }
 }
