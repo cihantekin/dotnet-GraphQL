@@ -1,5 +1,7 @@
 using dotnet_GraphQL.DataAccess;
 using dotnet_GraphQL.GraphQL;
+using HotChocolate.AspNetCore;
+using HotChocolate.AspNetCore.Playground;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +17,7 @@ builder.Services.AddDbContextFactory<AppDbContext>(opts => opts.UseInMemoryDatab
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
-builder.Services.AddGraphQLServer().AddType<AuthorType>().AddType<BlogPostType>().AddQueryType<Query>().AddMutationType<Mutation>().AddSubscriptionType<Subscription>();
+builder.Services.AddGraphQLServer().AddType<AuthorType>().AddType<BlogPostType>().AddQueryType<Query>().AddMutationType<Mutation>().AddSubscriptionType<Subscription>().AddInMemorySubscriptions();
 
 var app = builder.Build();
 
@@ -24,7 +26,20 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.UsePlayground(new PlaygroundOptions
+    {
+        QueryPath = "/graphql",
+        Path = "/playground"
+    });
 }
+
+app.UseWebSockets();
+app.UseRouting().
+    UseEndpoints(endpoints =>
+    {
+        endpoints.MapGraphQL();
+    });
 
 app.UseHttpsRedirection();
 
