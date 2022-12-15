@@ -1,4 +1,5 @@
 using dotnet_GraphQL.DataAccess;
+using dotnet_GraphQL.GraphQL;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContextFactory<AppDbContext>(opts => opts.UseInMemoryDatab
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddGraphQLServer().AddType<AuthorType>().AddType<BlogPostType>().AddQueryType<Query>().AddMutationType<Mutation>().AddSubscriptionType<Subscription>();
 
 var app = builder.Build();
 
